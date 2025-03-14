@@ -67,7 +67,7 @@ class embedding{
 		 
 		$result=[];  
 		$len=count($data);
-		for($i=0;$i<$len;$i+60){
+		for($i=0;$i<$len;$i+= 60){
 			$ops=[
 				 
 				"model"=>self::$model,
