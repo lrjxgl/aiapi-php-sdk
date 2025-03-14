@@ -65,24 +65,27 @@ class embedding{
 	
 	public static function batch($data=[]){	
 		 
-		 
-		 
-		$ops=[
-			 
-			"model"=>self::$model,
-			"dimensions"=>self::$dimensions,
-			"input"=>$data
-		];	
-		$res=self::post_json("https://open.bigmodel.cn/api/paas/v4/embeddings",json_encode($ops),false);
-        
-		$result=[]; 
-		$arr=json_decode($res,true);
-		if(isset($arr["data"])){
-			 
-			foreach($arr["data"] as $v){
-				$result[]=$v["embedding"];
+		$result=[];  
+		$len=count($data);
+		for($i=0;$i<$len;$i+60){
+			$ops=[
+				 
+				"model"=>self::$model,
+				"dimensions"=>self::$dimensions,
+				"input"=>array_slice($data,$i,60)
+			];	
+			$res=self::post_json("https://open.bigmodel.cn/api/paas/v4/embeddings",json_encode($ops),false);
+			
+			
+			$arr=json_decode($res,true);
+			if(isset($arr["data"])){
+				 
+				foreach($arr["data"] as $v){
+					$result[]=$v["embedding"];
+				}
 			}
-		}
+		} 
+		
 		
 		return $result;
 	}
